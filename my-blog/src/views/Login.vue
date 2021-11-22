@@ -1,5 +1,6 @@
 <template>
   <form @submit.prevent="handleSubmit">
+    <div>points: {{ points }}</div>
     <h3>Login</h3>
 
     <label for="email">Email:</label>
@@ -13,7 +14,8 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
   setup() {
@@ -24,7 +26,11 @@ export default {
       console.log(email.value, password.value)
     }
 
-    return { handleSubmit, email, password }
+    const store = useStore()
+
+    const points = computed(() => store.state.points)
+
+    return { handleSubmit, email, password, points }
   }
 }
 </script>
