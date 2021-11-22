@@ -43,7 +43,7 @@ export default {
     return { 
       blogs,
       points,
-      updatePoints,
+      updatePoints
     }
   }
 }
