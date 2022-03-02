@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="handleSubmit">
-    <div>points: {{ points }}</div>
+
     <h3>Login</h3>
 
     <label for="email">Email:</label>
@@ -10,27 +10,35 @@
     <input type="password" name="password" v-model="password" required>
 
     <button>Login</button>
+    <div v-if="error">{{error}}</div>
   </form>
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, } from 'vue'
 import { useStore } from 'vuex'
-
+import {useRouter} from 'vue-router'
 export default {
   setup() {
     const email = ref('')
     const password = ref('')
+    const store = useStore()
+    const router = useRouter()
+    const error = ref(null)
+    const handleSubmit = async() => {
+      try {
+        await store.dispatch("signin", {email:email.value, password: password.value})
+        router.push("/")
 
-    const handleSubmit = () => {
-      console.log(email.value, password.value)
+      } catch (err) {
+        error.value = err.message
+      }
     }
 
-    const store = useStore()
 
-    const points = computed(() => store.state.points)
+    
 
-    return { handleSubmit, email, password, points }
+    return { handleSubmit, email, password, error }
   }
 }
 </script>
